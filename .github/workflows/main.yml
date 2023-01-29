@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run tests
-        run: poetry run bash -c "cd src && coverage && pytest"
+        run: poetry run bash -c "cd src && coverage run --branch -m  pytest"
       - name: Coverage report
         run: poetry run bash -c "cd src && coverage xml"
       - name: Coverage report to Codecov

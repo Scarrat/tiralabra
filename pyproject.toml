@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "tiralabra"
+version = "0.1.0"
+description = ""
+authors = ["Joona Kostamo <joona.kostamo@outlook.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^7.2.1"
+coverage = "^7.1.0"
+pylint = "^2.15.10"
+bitarray = "^2.6.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = "src/"

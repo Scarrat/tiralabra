@@ -13,13 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     name: Test python API
     steps:
-    - uses: actions/checkout@v1
-    - name: Install requirements
-      run: pip install -r requirements.txt
-    - name: Run tests and collect coverage
-      run: pytest --cov .
-    - name: Upload coverage reports to Codecov
-      run: |
-        curl -Os https://uploader.codecov.io/latest/linux/codecov
-        chmod +x codecov
-        ./codecov -t ${a54d6a40-a132-40b0-92cd-15d0ce60e60f}
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Run tests
+        run: poetry run bash -c "cd src && coverage && pytest"
+      - name: Coverage report
+        run: poetry run bash -c "cd src && coverage xml"
+      - name: Coverage report to Codecov
+        uses: codecov/codecov-action@v2

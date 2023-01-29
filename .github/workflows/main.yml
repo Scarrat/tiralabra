@@ -22,4 +22,4 @@ jobs:
       run: |
         curl -Os https://uploader.codecov.io/latest/linux/codecov
         chmod +x codecov
-        ./codecov -t ${CODECOV_TOKEN}
+        ./codecov -t ${a54d6a40-a132-40b0-92cd-15d0ce60e60f}

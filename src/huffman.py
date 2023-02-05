@@ -1,12 +1,13 @@
 from heapq import heappush, heappop, heapify
 from collections import defaultdict
+import re
 from bitarray import bitarray
+
 
 
 class Huffman:
 
     def __init__(self):
-        self.bitpad = 0
         self.huff_dict = None
 
     def read_noncoded(self, file):
@@ -18,21 +19,43 @@ class Huffman:
     def read_encoded(self, file):
         decoded = bitarray()
 
-        with open(file, "rb") as r:
-            decoded.fromfile(r)
 
-        return decoded
+        data = open(file, 'rb').read()
+        info = data.split(b'\n')
+        huffdict = str(info[0])
+        huffdict = huffdict[2:len(huffdict)-1]
+        bitpad = str(info[1])
+        bitpad = bitpad[2:len(bitpad)-1]
+        # decoded.frombytes(info[2])
+
+        rdata = info[2:]
+        text = b''.join(rdata)
+        decoded.frombytes(text)
+
+
+
+        print(huffdict)
+        # print(bitpad)
+        # print(decoded)
+
+
+        
+
+        return huffdict, bitpad, decoded
 
     def encode_data(self, text):
 
+        # pad = (8 - len(text)) % 8
+        
+
         # creates frequency library
         freq_dict = defaultdict(int)
-        for char in text:
-            freq_dict[char] += 1
+        for sym in text:
+            freq_dict[sym] += 1
 
         # creates huffman tree
-        heap = [[frequency, [char, ""]]
-                for char, frequency in freq_dict.items()]
+        heap = [[frequency, [sym, ""]]
+                for sym, frequency in freq_dict.items()]
         heapify(heap)
         while len(heap) > 1:
             right = heappop(heap)
@@ -51,18 +74,63 @@ class Huffman:
         encoded_data = bitarray()
         encoded_data.encode(self.huff_dict, text)
 
-        # adds extra bits for bytes to work correctly
-        self.bitpad = 8 - (len(encoded_data) % 8)
+        pad = 8 - (len(encoded_data) % 8)
+        
 
-        with open("files/encoded.bin", "wb") as file:
+
+        with open("files/encoded.txt", "w") as file:
+            file.write(str(self.huff_dict))
+            
+        with open("files/encoded.txt", "a") as file:
+            file.write("\n")
+
+        with open("files/encoded.txt", "a") as file:
+            file.write(str(pad))
+
+        with open("files/encoded.txt", "a") as file:
+            file.write("\n")
+
+        with open("files/encoded.txt", "ab") as file:
             file.write(encoded_data)
 
+         
+            
+
     def decode_data(self, decoded):
+        dictionary, pad, text = decoded
+        newdic = dict()
 
-        decoded = decoded[:-self.bitpad]
 
-        decoded = decoded.decode(self.huff_dict)
-        decoded = ''.join(decoded)
+        dictionary = dictionary.split(", ")
+        for d in dictionary:
+            vals = re.findall(r"'([^']*)'", d)
+            newdic[vals[0]] = bitarray(vals[1])
+        if int(pad) != 8:
+            text = text[:-int(pad)]
+        
+        if '\\\\n' in newdic:
+            newdic['\n'] = newdic.pop('\\\\n')
+        if '\\xe2\\x80\\xa6' in newdic:
+            newdic['...'] = newdic.pop('\\xe2\\x80\\xa6')
+        if '\\xe2\\x80\\x99' in newdic:
+            newdic["'"] = newdic.pop('\\xe2\\x80\\x99')
+
+        
+        print(newdic)
+        text = text.decode(newdic)
+        text = ''.join(text)
+        # text = text.replace('\\n', '\n')
+        # text = text.replace("\\xe2\\x80\\x99", "'")
+
 
         with open("files/decoded.txt", "w") as file:
-            file.write(decoded)
+            file.write(text)
+
+
+        # texti = open("files/decoded.txt","r").read().replace('\\n','\n')
+
+        # with open("files/decoded.txt", "w") as file:
+        #     file.write(texti)
+
+
+

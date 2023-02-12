@@ -1,7 +1,7 @@
 # Compression program
 
 [Project specification](https://github.com/Scarrat/tiralabra/blob/main/documentation/projectspecification.md)  
-[Testing document](https://github.com/Scarrat/tiralabra/blob/main/documentation/testingdocument.md)
+[Testing document](https://github.com/Scarrat/tiralabra/blob/main/documentation/testingdocument.md)  
 [Implementation document](https://github.com/Scarrat/tiralabra/blob/main/documentation/implementationdocument.md)
 
 ## Weekly reports

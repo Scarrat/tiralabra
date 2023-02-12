@@ -22,6 +22,6 @@ class TestHuffman(unittest.TestCase):
         compr = os.path.getsize("files/encoded.txt")
         print(compr,orig)
         self.assertTrue(compr/orig < 0.6)
-        os.remove("files/decoded.txt")
+        os.remove("files/encoded.txt")
 
     # python3 -m unittest ./tests/test_huffman.py

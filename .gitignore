@@ -1,5 +1,4 @@
-src/__pycache__
-src/tests/pycache
+__pycache__
 .coverage
 .pytest_cache
-src/.pytest_cache
+

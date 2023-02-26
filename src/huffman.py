@@ -26,10 +26,6 @@ class Huffman:
             text = r.read()
             decoded.frombytes(text)
 
-        # print(huffdict)
-        # print(bitpad)
-        # print(decoded)
-
         return huffdict, bitpad, decoded
 
     def encode_data(self, text):
@@ -64,7 +60,7 @@ class Huffman:
         # makes note of the extra bits needed for decoding
         pad = 8 - (len(encoded_data) % 8)
 
-        with open("files/encoded.txt", "wb") as file:
+        with open("files/compressedhuff.txt", "wb") as file:
             file.write(self.huff_dict.__repr__().encode("utf-8"))
             file.write(b"\n")
             file.write(str(pad).encode("utf-8"))
@@ -81,5 +77,5 @@ class Huffman:
         text = text.decode(dictionary)
         text = ''.join(text)
 
-        with open("files/decoded.txt", "w") as file:
+        with open("files/decompressedhuff.txt", "w") as file:
             file.write(text)

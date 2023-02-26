@@ -6,4 +6,4 @@ Problems: The way the Lempel-Ziv algorithm saves the data to a file at the momen
 
 Time spent: 15 hours
 
-Next week: Make actual UI? Improvements?
+Next week: Make actual UI? Improvements? Documentation?

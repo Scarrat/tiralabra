@@ -16,7 +16,7 @@ class Huffman:
         return text
 
     def read_encoded(self, file):
-        """Reads data from a compressed file, splits it into 3 and returns all of them"""
+        """Reads data from a compressed file, splits it into the dictionary, padding and text, and returns all of them"""
         decoded = bitarray()
 
         with open(file, "rb") as r:
@@ -41,17 +41,18 @@ class Huffman:
                 for sym, frequency in freq_dict.items()]
         heapify(heap)
         while len(heap) > 1:
-            right = heappop(heap)
-            left = heappop(heap)
+            right = heappop(heap) # pop the node with the smallest frequency from the heap
+            left = heappop(heap) # pop the node with the second smallest frequency from the heap
             for pair in right[1:]:
-                pair[1] = '0' + pair[1]
+                pair[1] = '0' + pair[1] # add a 0 to the code of each symbol in the right node
             for pair in left[1:]:
-                pair[1] = '1' + pair[1]
-            heappush(heap, [right[0] + left[0]] + right[1:] + left[1:])
+                pair[1] = '1' + pair[1] # add a 1 to the code of each symbol in the left node
+            heappush(heap, [right[0] + left[0]] + right[1:] + left[1:]) # push the merged node back into the heap
+
 
         # creates the encoding dictionary
-        huff_list = right[1:] + left[1:]
-        self.huff_dict = {a[0]: bitarray(str(a[1])) for a in huff_list}
+        huff_list = right[1:] + left[1:] # create a list of symbol and code pairs
+        self.huff_dict = {pair[0]: bitarray(str(pair[1])) for pair in huff_list} # create a dictionary from the list of symbol and code pairs
 
         # encodes the data
         encoded_data = bitarray()
@@ -60,7 +61,7 @@ class Huffman:
         # makes note of the extra bits needed for decoding
         pad = 8 - (len(encoded_data) % 8)
 
-        with open("files/compressedhuff.txt", "wb") as file:
+        with open("outputs/compressedhuff.txt", "wb") as file:
             file.write(self.huff_dict.__repr__().encode("utf-8"))
             file.write(b"\n")
             file.write(str(pad).encode("utf-8"))
@@ -70,12 +71,13 @@ class Huffman:
     def decode_data(self, decoded):
         """decodes given data and writes it into an output file"""
         dictionary, pad, text = decoded
-
+        
+        # remove extra bits added during encoding
         if int(pad) != 8:
             text = text[:-int(pad)]
 
         text = text.decode(dictionary)
         text = ''.join(text)
 
-        with open("files/decompressedhuff.txt", "w") as file:
+        with open("outputs/decompressedhuff.txt", "w") as file:
             file.write(text)

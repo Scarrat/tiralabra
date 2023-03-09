@@ -46,7 +46,7 @@ class Lz77:
                 i += 1
         # Fill any remaining bits in the compressed data bitarray and write the compressed data to a file
         compressed_data.fill()
-        with open("files/compressedlz.txt", 'wb') as file:
+        with open("outputs/compressedlz.txt", 'wb') as file:
             file.write(compressed_data.tobytes())
 
     def decompress(self, data):
@@ -72,7 +72,7 @@ class Lz77:
                     output_data.append(output_data[-distance])
         out_data = b''.join(output_data)
 
-        with open("files/decompressedlz.txt", 'wb') as file:
+        with open("outputs/decompressedlz.txt", 'wb') as file:
             file.write(out_data)
 
     def find_match(self, data, index):

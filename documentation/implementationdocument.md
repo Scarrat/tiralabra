@@ -29,7 +29,7 @@ Unlike the original LZ77 algorithm where the next character was saved with dista
 
 Bitarray module is used to save the data as bits since I was already using it for Huffman class and a guide I followed used it.
 
-The time complexity for the lz compression is O(n), but since the search algorithm complexity is O(n*w) where w is the window size, the total time complexity is O(n*w)
+The time complexity for the lz compression is O(n), but since the search algorithm complexity is O(n*w) where w is the window size, the total time complexity is O(n*w). Testing data seems to prove this since it takes a lot longer than the huffman algorithm.
 
 ### Comparison
 

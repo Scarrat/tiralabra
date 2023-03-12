@@ -4,25 +4,25 @@ from bitarray import bitarray
 class Lz77:
 
     def __init__(self):
-        # Set the window size and lookahead size for the LZ77 algorithm
+        """Set the window size and lookahead size for the LZ77 algorithm"""
         self.window_size = 4095
         self.lookahead_size = 15
 
     def read_noncoded(self, input_file):
-        # Read in a file of noncoded data and return its contents as bytes
+        """Read in a file of noncoded data and return its contents as bytes"""
         with open(input_file, 'rb') as file:
             data = file.read()
             return data
 
     def read_encoded(self, input_file):
-        # Read in a file of encoded data and return its contents as a bitarray
+        """Read in a file of encoded data and return its contents as a bitarray"""
         data = bitarray()
         with open(input_file, 'rb') as file:
             data.fromfile(file)
             return data
 
     def compress(self, data):
-        """Compresses the input data"""
+        """Compresses the input data and writes it into a file"""
         i = 0
         compressed_data = bitarray()
         while i < len(data):
@@ -30,7 +30,7 @@ class Lz77:
             match = self.find_match(data, i)
             if match:
                 # If a match is found, append True to the compressed data bitarray, followed by the distance to the match and length of the match
-                (distance, length, next_char) = match
+                (distance, length) = match
                 # 1 bit reserved as a flag for match
                 compressed_data.append(True)
                 # 16 bits reserved for distance and length of the match
@@ -50,7 +50,7 @@ class Lz77:
             file.write(compressed_data.tobytes())
 
     def decompress(self, data):
-        """Decompresses the input data"""
+        """Decompresses the input data and writes it into a file"""
         output_data = []
         j = 0
         while len(data) >= j+9:
@@ -76,6 +76,7 @@ class Lz77:
             file.write(out_data)
 
     def find_match(self, data, index):
+        """finds a match of repeating characters and returns distance, length and next character"""
         # start searching from the earliest position
         start_index = max(0, index - self.window_size)
         # search until the end of lookahead buffer
@@ -92,8 +93,6 @@ class Lz77:
             if j > best_match_length:
                 best_match_length = j
                 best_match_distance = index - i
-                if index + j < len(data):
-                    next_char = data[index + j]
         if best_match_length > 2:  # only consider matches longer than 2 characters
-            return (best_match_distance, best_match_length, next_char)
+            return (best_match_distance, best_match_length)
         return None

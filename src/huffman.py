@@ -31,12 +31,12 @@ class Huffman:
     def encode_data(self, text):
         """Encodes the given text data and writes it into a file"""
 
-        # creates frequency library
+        # create frequency library
         freq_dict = defaultdict(int)
         for sym in text:
             freq_dict[sym] += 1
 
-        # creates huffman tree
+        # create huffman tree
         heap = [[frequency, [sym, ""]]
                 for sym, frequency in freq_dict.items()]
         heapify(heap)
@@ -50,17 +50,18 @@ class Huffman:
             heappush(heap, [right[0] + left[0]] + right[1:] + left[1:]) # push the merged node back into the heap
 
 
-        # creates the encoding dictionary
+        # create the encoding dictionary
         huff_list = right[1:] + left[1:] # create a list of symbol and code pairs
         self.huff_dict = {pair[0]: bitarray(str(pair[1])) for pair in huff_list} # create a dictionary from the list of symbol and code pairs
 
-        # encodes the data
+        # encode the data
         encoded_data = bitarray()
         encoded_data.encode(self.huff_dict, text)
 
-        # makes note of the extra bits needed for decoding
+        # make note of the extra bits needed for decoding
         pad = 8 - (len(encoded_data) % 8)
 
+        # write the data into a file as bytes
         with open("outputs/compressedhuff.txt", "wb") as file:
             file.write(self.huff_dict.__repr__().encode("utf-8"))
             file.write(b"\n")
@@ -78,6 +79,6 @@ class Huffman:
 
         text = text.decode(dictionary)
         text = ''.join(text)
-
+        # write the decompressed text into a file
         with open("outputs/decompressedhuff.txt", "w") as file:
             file.write(text)

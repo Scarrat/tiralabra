@@ -15,6 +15,8 @@ class UI:
         window.title("Compressor")
         window.resizable(width=False, height=False)
 
+
+        #create the frame and text of the GUI
         frm_entry = tk.Frame(master=window)
         ent_file = tk.Entry(master=window, width=20)
         lbl_huff = tk.Label(master=window, text="Huffman:")
@@ -30,6 +32,7 @@ class UI:
             command=lambda: self.lbl_info.config(text = self.huff_compress(ent_file.get()))
 
         )
+        # create the buttons for the GUI
         btn_huff_decompress = tk.Button(
             master=window,
             text="decompress",
@@ -48,7 +51,7 @@ class UI:
             command=lambda: [self.lz_decompress(ent_file.get()), self.lbl_info.config(text= "done decompressing lz")]
 
         )
-
+        # position everything
         frm_entry.grid(row=0, column=0, padx=10)
         btn_huff_compress.grid(row=2, column=0, sticky="w")
         btn_huff_decompress.grid(row=3, column=0, sticky="w")
@@ -59,6 +62,7 @@ class UI:
 
         window.mainloop()
 
+    # all the main functions for the GUI using the compressor classes
     def huff_compress(self,file):
         try:
             data = self.huffman.read_noncoded(f"inputs/{file}")

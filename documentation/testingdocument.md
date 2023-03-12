@@ -9,6 +9,10 @@ Report can be found here: ![codecov](https://codecov.io/gh/Scarrat/tiralabra/bra
 
 
 ### Performance testing
+
+Performance testing was done with specific perftest.py file. The process was checked by using cProfile with a 100kb lorem ipsum file.
+
+
 #### Huffman
 ##### Compressing
 | File  | Process time | Percentage of original |

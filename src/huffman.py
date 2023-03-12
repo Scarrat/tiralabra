@@ -4,26 +4,28 @@ from bitarray import bitarray
 
 
 class Huffman:
+    """class for compressing and decompressing files with huffman algorithm"""
 
     def __init__(self):
         self.huff_dict = None
 
     def read_noncoded(self, file):
         """Reads data from a non-compressed file and returns the data"""
-        with open(file, "r") as file:
-            text = file.read()
+        with open(file, "r") as f:
+            text = f.read()
 
         return text
 
     def read_encoded(self, file):
-        """Reads data from a compressed file, splits it into the dictionary, padding and text, and returns all of them"""
+        """Reads data from a compressed file, splits it into the dictionary,
+         padding and text, and returns all of them"""
         decoded = bitarray()
 
-        with open(file, "rb") as r:
-            readdict = r.readline().decode('utf-8')
+        with open(file, "rb") as f:
+            readdict = f.readline().decode('utf-8')
             huffdict = eval(readdict)
-            bitpad = r.readline().decode('utf-8')
-            text = r.read()
+            bitpad = f.readline().decode('utf-8')
+            text = f.read()
             decoded.frombytes(text)
 
         return huffdict, bitpad, decoded
@@ -41,18 +43,25 @@ class Huffman:
                 for sym, frequency in freq_dict.items()]
         heapify(heap)
         while len(heap) > 1:
-            right = heappop(heap) # pop the node with the smallest frequency from the heap
-            left = heappop(heap) # pop the node with the second smallest frequency from the heap
+            # pop the node with the smallest frequency from the heap
+            right = heappop(heap)
+            # pop the node with the second smallest frequency from the heap
+            left = heappop(heap)
             for pair in right[1:]:
-                pair[1] = '0' + pair[1] # add a 0 to the code of each symbol in the right node
+                # add a 0 to the code of each symbol in the right node
+                pair[1] = '0' + pair[1]
             for pair in left[1:]:
-                pair[1] = '1' + pair[1] # add a 1 to the code of each symbol in the left node
-            heappush(heap, [right[0] + left[0]] + right[1:] + left[1:]) # push the merged node back into the heap
-
+                # add a 1 to the code of each symbol in the left node
+                pair[1] = '1' + pair[1]
+            # push the merged node back into the heap
+            heappush(heap, [right[0] + left[0]] + right[1:] + left[1:])
 
         # create the encoding dictionary
-        huff_list = right[1:] + left[1:] # create a list of symbol and code pairs
-        self.huff_dict = {pair[0]: bitarray(str(pair[1])) for pair in huff_list} # create a dictionary from the list of symbol and code pairs
+        # create a list of symbol and code pairs
+        huff_list = right[1:] + left[1:]
+        # create a dictionary from the list of symbol and code pairs
+        self.huff_dict = {pair[0]: bitarray(
+            str(pair[1])) for pair in huff_list}
 
         # encode the data
         encoded_data = bitarray()
@@ -72,7 +81,7 @@ class Huffman:
     def decode_data(self, decoded):
         """decodes given data and writes it into an output file"""
         dictionary, pad, text = decoded
-        
+
         # remove extra bits added during encoding
         if int(pad) != 8:
             text = text[:-int(pad)]

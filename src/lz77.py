@@ -2,6 +2,7 @@ from bitarray import bitarray
 
 
 class Lz77:
+    """class for compressing and decompressing files with lz77"""
 
     def __init__(self):
         """Set the window size and lookahead size for the LZ77 algorithm"""
@@ -26,10 +27,12 @@ class Lz77:
         i = 0
         compressed_data = bitarray()
         while i < len(data):
-            # Find the longest match between the current position and a window of previously seen data
+            # Find the longest match between the current position
+            # and a window of previously seen data
             match = self.find_match(data, i)
             if match:
-                # If a match is found, append True to the compressed data bitarray, followed by the distance to the match and length of the match
+                # If a match is found, append True to the compressed data bitarray,
+                # followed by the distance to the match and length of the match
                 (distance, length) = match
                 # 1 bit reserved as a flag for match
                 compressed_data.append(True)
@@ -39,12 +42,14 @@ class Lz77:
                     bytes([((distance & 0xf) << 4) | length]))
                 i += length
             else:
-                # If no match is found, append False to the compressed data bitarray, followed by the next character in the data
+                # If no match is found, append False to the compressed data bitarray,
+                # followed by the next character in the data
                 compressed_data.append(False)
                 # 8 bits reserved for a character
                 compressed_data.frombytes(bytes([data[i]]))
                 i += 1
-        # Fill any remaining bits in the compressed data bitarray and write the compressed data to a file
+        # Fill any remaining bits in the compressed data bitarray
+        # and write the compressed data to a file
         compressed_data.fill()
         with open("outputs/compressedlz.txt", 'wb') as file:
             file.write(compressed_data.tobytes())
@@ -56,20 +61,24 @@ class Lz77:
         while len(data) >= j+9:
             flag = data[j]
             if not flag:
-                # If the flag is False, the next 8 bits represent a single character, which is added to the output data
+                # If the flag is False, the next 8 bits represent a single character,
+                # which is added to the output data
                 byte = data[j+1:j+9].tobytes()
                 j += 9
                 output_data.append(byte)
             else:
-                # If the flag is True, the next 16 bits represent the distance and length of the match, which are used to go back in the output to copy the match
+                # If the flag is True, the next 16 bits represent the distance and length of the match,
+                # which are used to go back in the output to copy the match
                 # and add it again to the output data
                 byte1 = ord(data[j+1:j+9].tobytes())
                 byte2 = ord(data[j+9:j+17].tobytes())
                 j += 17
                 distance = (byte1 << 4) | (byte2 >> 4)
-                length = (byte2 & 0xf)
-                for i in range(length):
+                length = byte2 & 0xf
+                i = 0
+                while i < length:
                     output_data.append(output_data[-distance])
+                    i += 1
         out_data = b''.join(output_data)
 
         with open("outputs/decompressedlz.txt", 'wb') as file:

@@ -48,7 +48,3 @@ if __name__ == "__main__":
     testlz("inputs/nonsense.txt")
     testlz("inputs/rj.txt")
     testlz("inputs/moby.txt")
-
-
-
-    

@@ -94,7 +94,7 @@ cProfile used with 100kb file.
 
 
 ### Improvements
-LZ algorithm search could be optimized with a variable window, might make it faster on specific files. Huffman algorithm could use a better way to store the dictionary into the file rather than just plain text, effect negligible on bigger files though.
+LZ algorithm search could be optimized with a variable window, might make it faster on specific files. Huffman algorithm could use a better way to store the dictionary into the file rather than just plain text, effect negligible on bigger files though. User-friendliness of the program could be improved.
 
 ### Sources
 http://ilan.schnell-web.net/prog/huffman/ for help with huffman algorithm.   

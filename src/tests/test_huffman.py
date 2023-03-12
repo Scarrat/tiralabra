@@ -7,7 +7,7 @@ class TestHuffman(unittest.TestCase):
         self.huffman = Huffman()
 
     def test_read_noncoded(self):
-        self.assertEqual(self.huffman.read_noncoded("inputs/test.txt"),"Hello")
+        self.assertEqual(self.huffman.read_noncoded("inputs/test.txt"),"Hello hello")
 
     def test_encoding(self):
         self.huffman.encode_data(self.huffman.read_noncoded("inputs/test.txt"))

@@ -7,7 +7,7 @@ class TestLz77(unittest.TestCase):
         self.lz77 = Lz77()
 
     def test_read_noncoded(self):
-        self.assertEqual(self.lz77.read_noncoded("inputs/test.txt"),b"Hello")
+        self.assertEqual(self.lz77.read_noncoded("inputs/test.txt"),b"Hello hello")
 
     def test_encoding(self):
         self.lz77.compress(self.lz77.read_noncoded("inputs/test.txt"))

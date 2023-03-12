@@ -40,7 +40,7 @@ Lempel-Ziv has better compression at small sizes due to no dictionary, and seems
 Specific data below.
 
 ##### Huffman
-cProfile used with 100kb file.
+cProfile used with 100kb file.   
 ![file1](https://github.com/Scarrat/tiralabra/blob/main/documentation/imgs/Screenshot_20230312_185823.png)
 
 ###### Compressing
@@ -68,7 +68,7 @@ cProfile used with 100kb file.
 
 
 #### Lempel-Ziv
-cProfile used with 100kb file.
+cProfile used with 100kb file.   
 ![file2](https://github.com/Scarrat/tiralabra/blob/main/documentation/imgs/Screenshot_20230312_185849.png)
 ###### Compressing
 | File  | Process time | Percentage of original |
